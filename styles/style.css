@@ -16,3 +16,7 @@ canvas {
 #collisionCanvas {
     opacity: 0;
 }
+
+#marv, #harry {
+    display:none;
+}

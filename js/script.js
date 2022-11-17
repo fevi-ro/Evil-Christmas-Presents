@@ -9,16 +9,17 @@ collisionCanvas.width = window.innerWidth;
 collisionCanvas.height = window.innerHeight;
 
 let score = 0;
+let gameOver = false;
 ctx.font = '50px Impact'
 
 
-let timeToNextPresent = 0;
-let presentInterval = 500;
+let timeToNextEnemy = 0;
+let enemyInterval = 500;
 let lastTime = 0;
 
 
-let presents = [];
-class Present {
+let enemies = [];
+class Enemy {
     constructor() {
         this.spriteWidth = 271;
         this.spriteHeight = 194;
@@ -31,11 +32,10 @@ class Present {
         this.directionY = Math.random() * 5 - 2.5;
         this.markedForDeletion = false;
         this.image = new Image();
-        this.image.src = 'images/gift.png';
         this.frame = 0;
-        this.maxFrame = 4;
+        this.maxFrame = 2;
         this.timeSinceFlap = 0;
-        this.flapInterval = Math.random() * 50 + 50;
+        this.timeInterval = Math.random() * 50 + 50;
         this.randomColors = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
         this.color = 'rgb(' + this.randomColors[0] + ',' + this.randomColors[1] + ',' + this.randomColors[2] + ')';
 
@@ -53,10 +53,13 @@ class Present {
         this.timeSinceFlap += deltaTime;
 
 
-        if (this.timeSinceFlap > this.flapInterval) {
+        if (this.timeSinceFlap > this.timeInterval) {
             if (this.frame > this.maxFrame) this.frame = 0;
             else this.frame++;
+            this.timeSinceFlap = 0;
         }
+
+    if (this.x < 0 - this.width) gameOver = true;
     }
 
     draw() {
@@ -65,7 +68,43 @@ class Present {
         ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
     }
 
+    // addEnemy(){
+    //     this.enemies.push(new Marv(this))
+    // }
 }
+class Harry extends Enemy {
+    constructor(enemy){
+        super();
+        this.enemy = enemy;
+        this.image = document.getElementById('harry')
+    }
+
+    update(deltaTime){
+        super.update(deltaTime)
+    }
+
+    draw() {
+super.draw()
+    } 
+}
+
+class Marv extends Enemy {
+    constructor(enemy){
+        super();
+        this.enemy = enemy;
+        this.image = document.getElementById('marv')
+    }
+
+    update(deltaTime){
+        super.update(deltaTime)
+    }
+
+    draw() {
+super.draw()
+    } 
+}
+
+
 
 let explosions = [];
 class Explosion {
@@ -97,7 +136,7 @@ class Explosion {
     }
 
         draw(){
-            ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.size, this.size);
+            ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y - this.size/4, this.size, this.size);
         }
     
 }
@@ -110,17 +149,27 @@ function drawScore() {
 
 }
 
+function drawGameOver(){
+ 
+    ctx.fillStyle = 'black'
+    ctx.fillText('GAME OVER, your score is ' + score, canvas.width/2, canvas.height/2 );
+    ctx.fillStyle = 'white'
+    ctx.fillText('GAME OVER, your score is ' + score, canvas.width/2+5, canvas.height/2+5 );
+    console.log('game over ' + score);
+}
+
 window.addEventListener('click', function (e) {
     console.log(e.x, e.y)
     const detectPixelColor = collisionCtx.getImageData(e.x, e.y, 1, 1) //detect collision by color
     console.log(detectPixelColor);
     const pc = detectPixelColor.data;
-    presents.forEach(element => {
+    enemies.forEach(element => {
         if (element.randomColors[0] === pc[0] && element.randomColors[1] === pc[1] && element.randomColors[2] === pc[2]) {
             element.markedForDeletion = true;
             score++;
-            explosions.push(new Explosion(element.x, element.y, element.size))
+            explosions.push(new Explosion(element.x, element.y, element.width))
             console.log(explosions);
+
         }
     })
 })
@@ -130,25 +179,31 @@ function animate(timestamp) {
     collisionCtx.clearRect(0, 0, canvas.width, canvas.height);
     let deltaTime = timestamp - lastTime;
     lastTime = timestamp;
-    timeToNextPresent += deltaTime;
-    if (timeToNextPresent > presentInterval) {
-        presents.push(new Present());
-        timeToNextPresent = 0;
-        presents.sort(function (a, b) {
+    timeToNextEnemy += deltaTime;
+    if (timeToNextEnemy > enemyInterval) {
+        enemies.push(new Enemy, new Marv, new Harry);
+        timeToNextEnemy = 0;
+       enemies.sort(function (a, b) {
             return a.width - b.width
         })
-        //console.log(presents);
-
+        //console.log(enemies);
+     
     }
     drawScore();
-    [...presents, ...explosions].forEach(element => element.update());
-    [...presents, ...explosions].forEach(element => element.draw());
-    presents = presents.filter(element => !element.markedForDeletion);
+    [...enemies, ...explosions].forEach(element => element.update(deltaTime));
+    [...enemies, ...explosions].forEach(element => element.draw());
+    enemies = enemies.filter(element => !element.markedForDeletion);
     explosions = explosions.filter(element => !element.markedForDeletion);
-    requestAnimationFrame(animate)
+
+    if (!gameOver) {requestAnimationFrame(animate)}
+    else {drawGameOver()}
+
+
 }
 
 animate(0);
+
+
 
 
 
