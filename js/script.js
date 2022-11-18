@@ -14,7 +14,7 @@ ctx.font = '50px Impact'
 
 
 let timeToNextEnemy = 0;
-let enemyInterval = 500;
+let enemyInterval = 1000;
 let lastTime = 0;
 
 
@@ -33,16 +33,20 @@ class Enemy {
         this.markedForDeletion = false;
         this.image = new Image();
         this.frame = 0;
-        this.maxFrame = 2;
+        this.maxFrame = 0;
         this.timeSinceFlap = 0;
-        this.timeInterval = Math.random() * 50 + 50;
+        this.timeInterval = Math.random() * 500 + 500;
         this.randomColors = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
         this.color = 'rgb(' + this.randomColors[0] + ',' + this.randomColors[1] + ',' + this.randomColors[2] + ')';
-
+    
 
     }
 
     update(deltaTime) {
+
+
+
+
         if (this.y < 0 || this.y > canvas.height - this.height) {
             this.directionY = this.directionY * -1;
         }
@@ -68,24 +72,16 @@ class Enemy {
         ctx.drawImage(this.image, this.frame * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
     }
 
-    // addEnemy(){
-    //     this.enemies.push(new Marv(this))
-    // }
 }
 class Harry extends Enemy {
     constructor(enemy){
         super();
         this.enemy = enemy;
         this.image = document.getElementById('harry')
+        
     }
 
-    update(deltaTime){
-        super.update(deltaTime)
-    }
 
-    draw() {
-super.draw()
-    } 
 }
 
 class Marv extends Enemy {
@@ -95,15 +91,28 @@ class Marv extends Enemy {
         this.image = document.getElementById('marv')
     }
 
-    update(deltaTime){
-        super.update(deltaTime)
-    }
 
-    draw() {
-super.draw()
-    } 
 }
 
+class Hans extends Enemy {
+    constructor(enemy){
+        super();
+        this.enemy = enemy;
+        this.image = document.getElementById('hans')
+    }
+
+
+}
+
+class Boss extends Enemy {
+    constructor(enemy){
+        super();
+        this.enemy = enemy;
+        this.image = document.getElementById('boss')
+    }
+
+
+}
 
 
 let explosions = [];
@@ -144,7 +153,7 @@ class Explosion {
 function drawScore() {
     ctx.fillStyle = 'black';
     ctx.fillText('Score: ' + score, 50, 70)
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'red';
     ctx.fillText('Score: ' + score, 55, 80)
 
 }
@@ -153,7 +162,7 @@ function drawGameOver(){
  
     ctx.fillStyle = 'black'
     ctx.fillText('GAME OVER, your score is ' + score, canvas.width/2, canvas.height/2 );
-    ctx.fillStyle = 'white'
+    ctx.fillStyle = 'red'
     ctx.fillText('GAME OVER, your score is ' + score, canvas.width/2+5, canvas.height/2+5 );
     console.log('game over ' + score);
 }
@@ -181,7 +190,7 @@ function animate(timestamp) {
     lastTime = timestamp;
     timeToNextEnemy += deltaTime;
     if (timeToNextEnemy > enemyInterval) {
-        enemies.push(new Enemy, new Marv, new Harry);
+        enemies.push(new Enemy, new Marv, new Harry, new Hans, new Boss);
         timeToNextEnemy = 0;
        enemies.sort(function (a, b) {
             return a.width - b.width
@@ -202,9 +211,3 @@ function animate(timestamp) {
 }
 
 animate(0);
-
-
-
-
-
-
