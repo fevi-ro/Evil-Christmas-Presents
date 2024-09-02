@@ -8,13 +8,54 @@ const collisionCtx = collisionCanvas.getContext('2d')
 collisionCanvas.width = window.innerWidth;
 collisionCanvas.height = window.innerHeight;
 
+/*
+// Step 1: Create an audio object
+const backgroundMusic = new Audio('sounds/Sephirod - Last Christmas.mp3');
+
+// Step 2: Set the audio to loop (optional)
+backgroundMusic.loop = true;
+
+
+// Function to start the game and play the music after user interaction
+function startGame() {
+    backgroundMusic.play().then(() => {
+        console.log("Background music started");
+        animate(0); // Start the game loop only after the music plays
+    }).catch(error => {
+        console.error('Error playing the background music:', error);
+    });
+
+    // Remove the event listener after the game and music start
+    window.removeEventListener('click', startGame);
+}
+
+// Add event listener for user interaction
+window.addEventListener('click', startGame);
+
+*/
+
+const cursorImage = new Image();
+    cursorImage.src = 'images/targeted.png'; // Replace with the path to your image
+
+
+    let mouseX = 0;
+    let mouseY = 0;
+
+    canvas.addEventListener('mousemove', (event) => {
+        const rect = canvas.getBoundingClientRect();
+        mouseX = event.clientX - rect.left;
+        mouseY = event.clientY - rect.top;
+    });
+
 let score = 0;
+let gameStartTime;
+const gameDuration = 10000; // Game duration in milliseconds (e.g., 60,000 ms = 60 seconds)
 let gameOver = false;
 ctx.font = '50px Impact'
 
 
 let timeToNextEnemy = 0;
-let enemyInterval = 1000;
+let enemyInterval = 2000; //enemies start coming too slow, must solve that
 let lastTime = 0;
 
 
@@ -26,10 +67,10 @@ class Enemy {
         this.sizeModifier = Math.random() * 0.6 + 0.4;
         this.width = this.spriteWidth * this.sizeModifier
         this.height = this.spriteHeight * this.sizeModifier
-        this.x = canvas.width;
+        this.x = canvas.width + Math.random() * 100;  // Starting slightly off-screen to the right
         this.y = Math.random() * (canvas.height - this.height);
-        this.directionX = Math.random() * 5 + 3;
-        this.directionY = Math.random() * 5 - 2.5;
+        this.directionX = Math.random() * 2 + 1;  // Slower speed (1 to 3 units per frame)
+        this.directionY = Math.random() * 2 - 1;  // Smaller vertical movement
         this.markedForDeletion = false;
         this.image = new Image();
         this.frame = 0;
@@ -44,26 +85,27 @@ class Enemy {
 
     update(deltaTime) {
 
-
+        console.log(`Enemy X Position: ${this.x}, Width: ${this.width}, DirectionX: ${this.directionX}`);
 
 
         if (this.y < 0 || this.y > canvas.height - this.height) {
-            this.directionY = this.directionY * -1;
+            this.directionY *= -1;
         }
-        this.x -= this.directionX;
-        this.y += this.directionY;
-        if (this.x < 0 - this.width) this.markedForDeletion = true;
-
+   
+        this.x -= this.directionX; // Move left
+        this.y += this.directionY; // Move vertically
         this.timeSinceFlap += deltaTime;
 
 
         if (this.timeSinceFlap > this.timeInterval) {
-            if (this.frame > this.maxFrame) this.frame = 0;
-            else this.frame++;
+            this.frame = (this.frame + 1) % (this.maxFrame + 1);
             this.timeSinceFlap = 0;
         }
-
-    if (this.x < 0 - this.width) gameOver = true;
+        if (this.x < 0 - this.width) {
+            this.markedForDeletion = true;
+          
+        }
+  
     }
 
     draw() {
@@ -150,13 +192,19 @@ class Explosion {
     
 }
 
-function drawScore() {
-    ctx.fillStyle = 'black';
-    ctx.fillText('Score: ' + score, 50, 70)
+function drawScore() { 
     ctx.fillStyle = 'red';
     ctx.fillText('Score: ' + score, 55, 80)
-
 }
+
+function drawCountdownTimer(remainingTime) {
+    ctx.fillStyle = 'black';
+    ctx.font = '30px Impact';
+    const seconds = Math.floor(remainingTime / 1000);
+    const milliseconds = Math.floor(remainingTime % 1000 / 10);
+    ctx.fillText(`Time Remaining: ${seconds}.${milliseconds} s`, 50, 50);
+}
+
 
 function drawGameOver(){
  
@@ -166,6 +214,8 @@ function drawGameOver(){
     ctx.fillText('GAME OVER, your score is ' + score, canvas.width/2+5, canvas.height/2+5 );
     console.log('game over ' + score);
 }
+
+
 
 window.addEventListener('click', function (e) {
     console.log(e.x, e.y)
@@ -183,26 +233,65 @@ window.addEventListener('click', function (e) {
     })
 })
 
+function startGame() {
+    gameStartTime = performance.now(); // Use performance.now() for high-resolution time
+    //playMusic(); // Start the music when the game starts//
+    animate(0);
+}
+
+/*
+function playMusic() {
+    backgroundMusic.play().catch(error => {
+        console.error('Error playing the background music:', error);
+    });
+}
+*/
+
+
 function animate(timestamp) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     collisionCtx.clearRect(0, 0, canvas.width, canvas.height);
     let deltaTime = timestamp - lastTime;
     lastTime = timestamp;
+
+      // Check if the game time is up
+      const elapsedTime = timestamp - gameStartTime;
+      if (elapsedTime > gameDuration) {
+          gameOver = true;
+           
+      }
+     
+
+      const remainingTime = Math.max(0, gameDuration - elapsedTime);     // Calculate elapsed and remaining time
+   
+
+     
+
     timeToNextEnemy += deltaTime;
-    if (timeToNextEnemy > enemyInterval) {
-        enemies.push(new Enemy, new Marv, new Harry, new Hans, new Boss);
-        timeToNextEnemy = 0;
-       enemies.sort(function (a, b) {
-            return a.width - b.width
-        })
-        //console.log(enemies);
+        if (timeToNextEnemy > enemyInterval) {
+            enemies.push(new Enemy());
+            enemies.push(new Marv());
+            enemies.push(new Harry());
+            enemies.push(new Hans());
+            enemies.push(new Boss());
+            timeToNextEnemy = 0;
+        
+
+            enemies.sort((a, b) => a.width - b.width);
+
      
     }
+
+
     drawScore();
+    drawCountdownTimer(remainingTime); // Draw the countdown timer
     [...enemies, ...explosions].forEach(element => element.update(deltaTime));
     [...enemies, ...explosions].forEach(element => element.draw());
     enemies = enemies.filter(element => !element.markedForDeletion);
     explosions = explosions.filter(element => !element.markedForDeletion);
+
+   // Draw the image at the mouse position
+ctx.drawImage(cursorImage, mouseX - cursorImage.width / 2, mouseY - cursorImage.height / 2);
 
     if (!gameOver) {requestAnimationFrame(animate)}
     else {drawGameOver()}
@@ -210,4 +299,6 @@ function animate(timestamp) {
 
 }
 
+
 animate(0);
+startGame();
