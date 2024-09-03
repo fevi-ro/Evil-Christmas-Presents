@@ -7,7 +7,7 @@ body {
   border: 0;
   overflow: hidden;
   /*  Disable scrollbars */
-  display: block;
+  display: flex;
   /* No floating content on sides */
 }
 
@@ -23,10 +23,219 @@ canvas {
 
 }
 
+#background{
+    position: absolute;
+    background: url("../images/background2.jpg") no-repeat;
+    background-size: cover;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+h1 {
+    margin-top: 0px;
+    font-family: "Mountains of Christmas", serif;
+    font-weight: 700;
+  font-style: normal;
+    font-size: 6rem;
+    background: linear-gradient(to right, #e40d09, #700002, #2ca700, #940000, #045c15, #da0101, #04b40a, #ff0000, #500202);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+h3 {
+    font-family: "Indie Flower", cursive;
+    font-size: 4rem;
+    font-weight: 400;
+}
+
+
+p  {
+    text-align: center;
+    margin: 2px;
+    font-weight: bold;
+    padding: 10px 0 10px 10px;
+    text-shadow: -1px -1px black, 1px 1px white;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -o-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0 .2em gray;
+    font-family: "Indie Flower";
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+a {
+    text-decoration: none;
+    color: transparent;
+}
+
+
+.container {
+    display: inline-flex;
+    text-align: center;
+    align-items: center;
+    margin-top: 5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+.instructions {
+    display: column;
+    text-align: center;
+    align-items: center;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 50%;
+}
+
 #collisionCanvas {
     opacity: 0;
 }
 
 #marv, #harry, #hans, #boss {
     display:none;
+}
+
+
+
+#play {
+    background-color: #cc2121; /* Green */
+    border: 2px solid #04AA6D;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 2.5rem;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: "Mountains of Christmas", serif;
+    font-weight: 700;
+   }
+
+
+
+.button1 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #04AA6D;
+  }
+  
+  #play:hover {
+    background-color: #ffffff;
+    color: rgb(183, 0, 0);
+  }
+
+  
+/* Media Queries * * * * * * * * */
+
+@media only screen and (max-width: 759px) {
+    body,
+    #game-area {
+        width: 100%;
+    }
+    body {
+        background-repeat: round;
+        background-size: cover;
+    }
+    .container {
+        flex-wrap: nowrap;
+    }
+    #startpage.container {
+        flex-wrap: wrap;
+    }
+    #Blue.hexagon.colourbtn,
+    #Green.hexagon.colourbtn,
+    #Red.hexagon.colourbtn,
+    #Yellow.hexagon.colourbtn,
+    #Purple.hexagon.colourbtn {
+        margin: 0rem;
+    }
+    .wrapper {
+        margin-left: 0rem;
+        width: 99%
+    }
+    header {
+        margin-left: 2rem;
+    }
+    h1 {
+        font-size: 4rem;
+    }
+    .gameOver,
+    #replay {
+        font-size: 2rem;
+        margin-top: 0.5rem;
+    }
+    img {
+        max-width: 80%;
+    }
+    .instructions {
+        display: none;
+    }
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    body,
+    #game-area {
+        width: 100%;
+    }
+    .container {
+        flex-wrap: nowrap;
+    }
+    #startpage.container {
+        flex-wrap: wrap;
+    }
+    .instructions {
+        display: none;
+    }
+    body {
+        background-repeat: round;
+        background-size: cover;
+    }
+    #Blue.hexagon.colourbtn,
+    #Green.hexagon.colourbtn,
+    #Red.hexagon.colourbtn,
+    #Yellow.hexagon.colourbtn,
+    #Purple.hexagon.colourbtn {
+        margin: 0rem;
+        width: unset;
+    }
+    .wrapper {
+        margin-left: 0rem;
+        width: 99%
+    }
+    header {
+        margin-left: 1rem;
+        display: inline-flex;
+        width: 20rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+    .gameOver,
+    #replay {
+        font-size: 2rem;
+        margin-left: 0rem;
+        margin-top: 0.5rem;
+    }
+    img {
+        max-width: 90%;
+        margin-top: 1rem;
+    }
+    #timer,
+    #score {
+        font-size: 0.6rem;
+        padding-left: 1rem;
+    }
+    .newScore {
+        font-size: 2rem;
+    }
 }

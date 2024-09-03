@@ -8,31 +8,13 @@ const collisionCtx = collisionCanvas.getContext('2d')
 collisionCanvas.width = window.innerWidth;
 collisionCanvas.height = window.innerHeight;
 
-/*
+
 // Step 1: Create an audio object
 const backgroundMusic = new Audio('sounds/Sephirod - Last Christmas.mp3');
 
 // Step 2: Set the audio to loop (optional)
 backgroundMusic.loop = true;
 
-
-// Function to start the game and play the music after user interaction
-function startGame() {
-    backgroundMusic.play().then(() => {
-        console.log("Background music started");
-        animate(0); // Start the game loop only after the music plays
-    }).catch(error => {
-        console.error('Error playing the background music:', error);
-    });
-
-    // Remove the event listener after the game and music start
-    window.removeEventListener('click', startGame);
-}
-
-// Add event listener for user interaction
-window.addEventListener('click', startGame);
-
-*/
 
 const cursorImage = new Image();
     cursorImage.src = 'images/targeted.png'; // Replace with the path to your image
@@ -213,6 +195,10 @@ function drawGameOver(){
     ctx.fillStyle = 'red'
     ctx.fillText('GAME OVER, your score is ' + score, canvas.width/2+5, canvas.height/2+5 );
     console.log('game over ' + score);
+
+     // Stop the background music
+     backgroundMusic.pause();
+     backgroundMusic.currentTime = 0; // Rewind the music to the start if you play it again later
 }
 
 
@@ -235,17 +221,17 @@ window.addEventListener('click', function (e) {
 
 function startGame() {
     gameStartTime = performance.now(); // Use performance.now() for high-resolution time
-    //playMusic(); // Start the music when the game starts//
+    playMusic(); // Start the music when the game starts//
     animate(0);
 }
 
-/*
+
 function playMusic() {
     backgroundMusic.play().catch(error => {
         console.error('Error playing the background music:', error);
     });
 }
-*/
+
 
 
 function animate(timestamp) {
