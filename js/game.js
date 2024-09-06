@@ -9,7 +9,6 @@ collisionCanvas.width = window.innerWidth;
 collisionCanvas.height = window.innerHeight;
 
 
-
 const backgroundMusic = new Audio('sounds/Sephirod - Last Christmas.mp3');
 const gameOverSound = new Audio("sounds/gameover.mp3")
 
@@ -32,17 +31,19 @@ const cursorImage = new Image();
     let mouseX = 0;
     let mouseY = 0;
 
+
     canvas.addEventListener('mousemove', (event) => {
         const rect = canvas.getBoundingClientRect();
         mouseX = event.clientX - rect.left;
         mouseY = event.clientY - rect.top;
+
     });
 
 let score = 0;
 let gameStartTime;
 const gameDuration = 30000; // Game duration in milliseconds (e.g., 60,000 ms = 60 seconds)
 let gameOver = false;
-ctx.font = '50px Impact'
+
 
 
 let timeToNextEnemy = 0;
@@ -54,7 +55,7 @@ let enemies = [];
 class Enemy {
     constructor() {
         this.spriteWidth = 271;
-        this.spriteHeight = 194;
+        this.spriteHeight = 300;
         this.sizeModifier = Math.random() * 0.6 + 0.4;
         this.width = this.spriteWidth * this.sizeModifier
         this.height = this.spriteHeight * this.sizeModifier
@@ -314,6 +315,37 @@ class Scream {
     
 }
 
+
+
+
+let scorePopUps = []; // Array to hold active score pop-ups
+
+class ScorePopUp {
+    constructor(x, y, value, color) {
+        this.x = x;
+        this.y = y;
+        this.value = value; // e.g., +1, +5, -2
+        this.opacity = 1;   // Fully visible initially
+        this.color = color; // Different colors for positive/negative
+        this.markedForDeletion = false;
+    }
+
+    update() {
+        this.y -= 1;       // Move upwards
+        this.opacity -= 0.02; // Fade out gradually
+        if (this.opacity <= 0) {
+            this.markedForDeletion = true; // Remove when invisible
+        }
+    }
+
+    draw() {
+        ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`; // Adjust transparency
+        ctx.font = '30px Impact';
+        ctx.fillText(this.value, this.x, this.y);
+    }
+}
+
+
 function drawScore() { 
     ctx.fillStyle = 'red';
     ctx.fillText('Score: ' + score, 55, 80)
@@ -330,10 +362,19 @@ function drawCountdownTimer(remainingTime) {
 
 function drawGameOver(){
  
-    ctx.fillStyle = 'black'
-    ctx.fillText('GAME OVER, your score is ' + score, canvas.width/2, canvas.height/2 );
-    ctx.fillStyle = 'red'
-    ctx.fillText('GAME OVER, your score is ' + score, canvas.width/2+5, canvas.height/2+5 );
+
+    document.fonts.ready.then(function() {
+        // Set the font with the same name used in Google Fonts
+        ctx.font = 'bold 40px "Indie Flower"';
+        ctx.fillStyle =  "rgb(5 77 9)";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+    
+        // Draw the text on the canvas
+        ctx.fillText('GAME OVER, your score is ' + score, canvas.width / 2, canvas.height / 2);
+    });
+
+
     console.log('game over ' + score);
 
      // Stop the background music
@@ -346,11 +387,22 @@ function drawGameOver(){
         console.error('Error playing the game over sound:', error);
     });
 
+
+
+
   // Show the return button
   returnButton.style.display = 'block';
   returnButton.style.position = 'absolute';
-  returnButton.style.top = (canvas.height / 2 + 50) + 'px';
-  returnButton.style.left = (canvas.width / 2 - 75) + 'px'; // Adjust button position as needed
+
+
+// Get button dimensions
+const buttonWidth = returnButton.offsetWidth;
+const buttonHeight = returnButton.offsetHeight;
+
+// Center the button
+returnButton.style.top = (canvas.height / 2 - buttonHeight / 2) + 'px'; // Vertical center
+returnButton.style.left = (canvas.width / 2 - buttonWidth / 2) + 'px'; // Horizontal center
+
 }  
 
 
@@ -367,19 +419,30 @@ window.addEventListener('click', function (e) {
     enemies.forEach(element => {
         if (element.randomColors[0] === pc[0] && element.randomColors[1] === pc[1] && element.randomColors[2] === pc[2]) {
             element.markedForDeletion = true;
-            score++;
-            explosions.push(new Explosion(element.x, element.y, element.width))
-            console.log(explosions);
-           
 
+            // Scoring rule: Big enemies = 1 point, Medium enemies = 2 points, Small enemies = 5 points
+            let pointsAwarded = (element.sizeModifier > 0.7) ? 1 : 5 && (element.sizeModifier > 0.5) ? 2 : 5;
+            score += pointsAwarded;
+
+            // Create a score pop-up at the enemy's location
+            let color = '23, 185, 55'; // Green color for positive points
+            scorePopUps.push(new ScorePopUp(element.x, element.y, `+${pointsAwarded}`, color));
+
+            explosions.push(new Explosion(element.x, element.y, element.width));
+            console.log(`Score: ${score}, Points Awarded: ${pointsAwarded}`);
         }
-    })
+    });
 
 
     goodGuys.forEach(element => {
         if (element.randomColors[0] === pc[0] && element.randomColors[1] === pc[1] && element.randomColors[2] === pc[2]) {
             element.markedForDeletion = true;
             score -= 2; // Decrease the score when a good guy is hit
+
+           // Create a score pop-up for the negative score
+           let color = '215, 24, 24'; // Red color for negative points
+           scorePopUps.push(new ScorePopUp(element.x, element.y, `-2`, color));
+
             screams.push(new Scream(element.x, element.y, element.width));
         }
     });
@@ -468,12 +531,15 @@ function animate(timestamp) {
 
     drawScore();
     drawCountdownTimer(remainingTime); // Draw the countdown timer
-    [...enemies, ...explosions, ...goodGuys, ...screams].forEach(element => element.update(deltaTime));
-    [...enemies, ...explosions, ...goodGuys, ...screams].forEach(element => element.draw());
+    [...enemies, ...explosions, ...goodGuys, ...screams, ...scorePopUps].forEach(element => element.update(deltaTime));
+    [...enemies, ...explosions, ...goodGuys, ...screams, ...scorePopUps].forEach(element => element.draw());
+
+    //remove finished items
     enemies = enemies.filter(element => !element.markedForDeletion);
     goodGuys = goodGuys.filter(element => !element.markedForDeletion);
     explosions = explosions.filter(element => !element.markedForDeletion);
     screams = screams.filter(element => !element.markedForDeletion);
+    scorePopUps = scorePopUps.filter(element => !element.markedForDeletion);
 
    // Draw the image at the mouse position
 ctx.drawImage(cursorImage, mouseX - cursorImage.width / 2, mouseY - cursorImage.height / 2);

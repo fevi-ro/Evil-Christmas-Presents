@@ -6,12 +6,16 @@ body {
   margin: 0px;
   border: 0;
   overflow: hidden;
+  background: url("../images/background2.jpg") no-repeat;
+  background-size: cover;
   /*  Disable scrollbars */
   display: flex;
   /* No floating content on sides */
 }
 
 
+
+    
 canvas {
     position: absolute;
     background: url("../images/background2.jpg") no-repeat;
@@ -20,7 +24,7 @@ canvas {
     left: 0;
     width: 100%;
     height: 100%;
-
+cursor: none;
 }
 
 #background{
@@ -30,14 +34,61 @@ canvas {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+
+}
+
+header {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    justify-content: center; /* Horizontally center items */
+    width: 100%;
+    height: auto; /* Let the height adjust based on content */
+    padding: 0;
+    box-sizing: border-box;
+   
+}
+
+.img_container {
+    flex: 0 0 auto; /* Prevent the container from growing or shrinking */
+    margin-right: 1rem; /* Space between image and heading */
+    margin-top: -4rem;
+}
+
+.img_container img {
+    width: 100%;
+    display: block; /* Remove any default inline spacing */
+    transform-origin: top center; /* Make the ball swing from the top */
+    animation: smooth-swing 4s ease-in-out infinite; /* Smooth continuous pendulum swing */
+
+}
+
+
+@keyframes smooth-swing {
+    0% {
+        transform: rotate(10deg);  /* Start from 30 degrees */
+      }
+      50% {
+        transform: rotate(-10deg); /* Swing to -30 degrees */
+      }
+      100% {
+        transform: rotate(10deg);  /* Return to 30 degrees */
+      }
+      }
+
+
+.col1 {
+    display: flex;
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    text-align: center; /* Center text horizontally */
+    flex: 0; /* Allow the column to grow and fill space */
+    margin-top: -1rem;
 }
 
 h1 {
-    margin-top: 0px;
+    margin: 0; /* Remove default margins */
     font-family: "Mountains of Christmas", serif;
     font-weight: 700;
-  font-style: normal;
     font-size: 6rem;
     background: linear-gradient(to right, #e40d09, #700002, #2ca700, #940000, #045c15, #da0101, #04b40a, #ff0000, #500202);
     -webkit-background-clip: text;
@@ -77,7 +128,7 @@ a {
     display: inline-flex;
     text-align: center;
     align-items: center;
-    margin-top: 5rem;
+    overflow: auto;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
@@ -99,12 +150,13 @@ a {
 }
 
 #marv, #harry, #hans, #boss, #kevin, #diehard, #griswold {
+
     display:none;
 }
 
+/****** Buttons ********/
 
-
-#play {
+#play, #returnButton {
     background-color: #cc2121; /* Green */
     border: 2px solid #04AA6D;
     color: white;
@@ -113,129 +165,259 @@ a {
     text-decoration: none;
     display: inline-block;
     font-size: 2.5rem;
-    margin: 4px 2px;
+    margin-top: 3rem;
     transition-duration: 0.4s;
     cursor: pointer;
     border-radius: 4px;
     font-family: "Mountains of Christmas", serif;
     font-weight: 700;
+    position: relative;
+    z-index: 5;
    }
 
 
 
-.button1 {
-    background-color: white; 
-    color: black; 
-    border: 2px solid #04AA6D;
-  }
-  
-  #play:hover {
+
+  #play:hover, #returnButton:hover {
     background-color: #ffffff;
     color: rgb(183, 0, 0);
   }
+
+
+  #returnButton {
+    margin-top: 9rem;
+  }
+
+
+/******** Snowflakes *********/
+    
+  .snowflakes {
+    width: 100%; height: 1200px;
+    position: absolute; top: -90px; left: 0;
+    z-index: 0;
+}
+
+i, i:after, i:before { background: white; }
+i {
+    display: inline-block;
+    -webkit-animation: snowflakes 3s linear 2s 20;
+    -moz-animation: snowflakes 3s linear 2s 20;
+    position: relative;
+}
+i:after, i:before {
+    height: 100%;
+    width: 100%;
+    content: ".";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    -webkit-transform: rotate(120deg);
+}
+i:before { -webkit-transform: rotate(240deg); }
+
+@-webkit-keyframes snowflakes {
+    0% {
+        -webkit-transform: translate3d(0,0,0) rotate(0deg) scale(0.6);
+    }
+    100% {
+        -webkit-transform: translate3d(15px, 1200px, 0px) rotate(360deg) scale(0.6);
+    };
+}
+
+.snowflakes i:nth-child(3n) {
+    width: 16px; height: 4px;
+    -webkit-animation-duration: 4s;
+    -webkit-animation-iteration-count: 30;
+    -webkit-transform-origin: right -45px;
+}
+
+.snowflakes i:nth-child(3n+1) {
+    width: 24px; height: 6px;
+    -webkit-animation-duration: 6s;
+    -webkit-animation-iteration-count: 45;
+    -webkit-transform-origin: right -30px;
+}
+
+.snowflakes i:nth-child(3n+2) {
+    width: 32px; height: 8px;
+    -webkit-animation-duration: 8s;
+    -webkit-animation-iteration-count: 60;
+    -webkit-transform-origin: right -15px;
+}
+    
+/* different delays so they don't all start at the same time */
+.snowflakes i:nth-child(7n) {
+  opacity:.3;
+  -webkit-animation-delay: 0s;
+  -webkit-animation-timing-function:ease-in;
+}
+.snowflakes i:nth-child(7n+1) {
+  opacity:.4;
+  -webkit-animation-delay: 1s;
+  -webkit-animation-timing-function:ease-out;
+}
+.snowflakes i:nth-child(7n+2) {
+  opacity:.5;
+  -webkit-animation-delay: 1.5s;
+  -webkit-animation-timing-function:linear;
+}
+.snowflakes i:nth-child(7n+3) {
+  opacity:.6;
+  -webkit-animation-delay: 2s;
+  -webkit-animation-timing-function:ease-in;
+}
+.snowflakes i:nth-child(7n+4) {
+  opacity:.7;
+  -webkit-animation-delay: 2.5s;
+  -webkit-animation-timing-function:linear;
+}
+.snowflakes i:nth-child(7n+5) {
+  opacity:.8;
+  -webkit-animation-delay: 3s;
+  -webkit-animation-timing-function:ease-out;
+}
+.snowflakes i:nth-child(7n+6) {
+  opacity:.9;
+  -webkit-animation-delay: 3.5s;
+  -webkit-animation-timing-function:ease-in;
+}
+
+
+
 
   
 /* Media Queries * * * * * * * * */
 
 @media only screen and (max-width: 759px) {
-    body,
-    #game-area {
-        width: 100%;
+    html, body {
+      background-size: cover; /* Keep the background covering the screen */
+      background-position: center; /* Ensure background is centered */
+      overflow: auto; /* Allow scrolling */
+      display: block; /* Block layout for medium screens */
     }
-    body {
-        background-repeat: round;
-        background-size: cover;
+  
+    canvas, #background {
+      width: 100vw;
+      height: 100vh;
+      background-size: cover; /* Ensure background covers the whole area */
+      background-position: center; /* Center the background image */
+      cursor: none;
     }
-    .container {
-        flex-wrap: nowrap;
-    }
-    #startpage.container {
-        flex-wrap: wrap;
-    }
-    #Blue.hexagon.colourbtn,
-    #Green.hexagon.colourbtn,
-    #Red.hexagon.colourbtn,
-    #Yellow.hexagon.colourbtn,
-    #Purple.hexagon.colourbtn {
-        margin: 0rem;
-    }
-    .wrapper {
-        margin-left: 0rem;
-        width: 99%
-    }
+  
     header {
-        margin-left: 2rem;
+      flex-direction: column; /* Stack elements vertically */
+      align-items: center; /* Ensure elements stay centered */
+      padding: 1.5rem; /* Add some padding for larger devices */
     }
+  
+    .img_container img {
+      width: 70%; /* Adjust image size for larger mobile devices */
+      margin: 0 auto; /* Center the image */
+      margin-top: 2rem; /* Space from the top */
+    }
+  
+    .col1 {
+      margin-top: 1rem;
+      font-size: 2.5rem; /* Slightly larger title for tablets */
+    }
+  
     h1 {
-        font-size: 4rem;
+      font-size: 4.5rem; /* Larger heading size */
     }
-    .gameOver,
-    #replay {
-        font-size: 2rem;
-        margin-top: 0.5rem;
+  
+    h3 {
+      font-size: 3rem; /* Adjust subheading size */
     }
-    img {
-        max-width: 80%;
+  
+    p {
+      font-size: 1.2rem; /* Slightly bigger text */
+      padding: 10px 0; /* Maintain padding */
     }
+  
     .instructions {
-        display: none;
+      width: 80%; /* Make instruction box wider */
+      margin-top: 3rem; /* More space above */
     }
-}
+  
+    /* Center the play button */
+    #play, #returnButton {
+      font-size: 2rem; /* Larger button text */
+      padding: 14px 28px; /* Adjust button padding */
+      margin-top: 1.5rem; /* Add more space above the button */
+      display: block;
+      margin-left: auto;
+      margin-right: auto; /* Center the button */
+    }
+  
+    .snowflakes {
+      height: 1000px; /* Increase snowflake area height for larger screens */
+    }
+  }
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
-    body,
-    #game-area {
-        width: 100%;
-    }
-    .container {
-        flex-wrap: nowrap;
-    }
-    #startpage.container {
-        flex-wrap: wrap;
-    }
-    .instructions {
-        display: none;
-    }
-    body {
-        background-repeat: round;
-        background-size: cover;
-    }
-    #Blue.hexagon.colourbtn,
-    #Green.hexagon.colourbtn,
-    #Red.hexagon.colourbtn,
-    #Yellow.hexagon.colourbtn,
-    #Purple.hexagon.colourbtn {
-        margin: 0rem;
-        width: unset;
-    }
-    .wrapper {
-        margin-left: 0rem;
-        width: 99%
-    }
-    header {
-        margin-left: 1rem;
-        display: inline-flex;
-        width: 20rem;
-    }
-    h1 {
-        font-size: 2rem;
-    }
-    .gameOver,
-    #replay {
-        font-size: 2rem;
-        margin-left: 0rem;
-        margin-top: 0.5rem;
-    }
-    img {
-        max-width: 90%;
-        margin-top: 1rem;
-    }
-    #timer,
-    #score {
-        font-size: 0.6rem;
-        padding-left: 1rem;
-    }
-    .newScore {
-        font-size: 2rem;
-    }
+    @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+        html, body {
+          background-size: cover; /* Adjust background to fit smaller screens */
+          background-position: center;
+          overflow: auto; /* Enable scrolling for smaller screens */
+          display: block; /* Flexbox might not work well on small devices */
+         
+
+        }
+      
+        canvas, #background {
+          width: 100vw;
+          height: 100vh;
+          background-size: cover;
+          background-position: center;
+         cursor: none;
+        }
+      
+        header {
+          flex-direction: column; /* Stack elements vertically */
+          align-items: center; /* Ensure elements stay centered */
+          padding: 1rem; /* Add some padding */
+        }
+      
+        .img_container img {
+          width: 80%; /* Reduce image size */
+          margin: 0 auto; /* Center the image */
+          margin-top: 1rem; /* Space from the top */
+        }
+      
+        .col1 {
+          margin-top: 1rem;
+          font-size: 1.5rem; /* Reduce title size */
+        }
+      
+        h1 {
+          font-size: 3rem; /* Reduce heading size */
+        }
+      
+        h3 {
+          font-size: 2.5rem; /* Adjust subheading size */
+        }
+      
+        p {
+          font-size: 1rem; /* Make text smaller */
+          padding: 5px 0; /* Reduce padding */
+        }
+      
+        .instructions {
+          width: 90%; /* Make the instruction box full width */
+          margin-top: 2rem; /* Reduce space above */
+        }
+      
+        #play, #returnButton {
+          font-size: 1.5rem; /* Reduce button text size */
+          padding: 10px 20px; /* Adjust button padding */
+          margin-top: 1rem; /* Reduce margin */
+          margin-left: auto;
+          margin-right: auto;
+        }
+      
+        .snowflakes {
+          height: 800px; /* Reduce snowflake area height */
+        }
+      }
 }
