@@ -51,7 +51,7 @@ header {
 .img_container {
     flex: 0 0 auto; 
     margin-right: 1rem; 
-    margin-top: -4rem;
+    margin-top: -6rem;
 }
 
 .img_container img {
@@ -82,7 +82,7 @@ header {
     justify-content: center; 
     text-align: center; 
     flex: 0; 
-    margin-top: -1rem;
+    margin-top: -3rem;
 }
 
 h1 {
@@ -98,7 +98,7 @@ h1 {
 
 h3 {
     font-family: "Indie Flower", cursive;
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 400;
 }
 
@@ -115,7 +115,7 @@ p  {
     border-radius: 7px;
     box-shadow: 0 .2em gray;
     font-family: "Indie Flower";
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 400;
 }
 a {
@@ -139,7 +139,7 @@ a {
     display: column;
     text-align: center;
     align-items: center;
-    margin-top: 3rem;
+    margin-top: 0rem;
     flex-wrap: wrap;
     justify-content: center;
     width: 50%;
