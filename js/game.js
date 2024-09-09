@@ -25,7 +25,7 @@ backgroundMusic.loop = true;
 
 
 const cursorImage = new Image();
-    cursorImage.src = 'images/targeted.png'; // Replace with the path to your image
+    cursorImage.src = 'images/targeted.png'; 
 
 
     let mouseX = 0;
@@ -41,13 +41,13 @@ const cursorImage = new Image();
 
 let score = 0;
 let gameStartTime;
-const gameDuration = 30000; // Game duration in milliseconds (e.g., 60,000 ms = 60 seconds)
+const gameDuration = 60000; // Game duration in milliseconds (e.g., 60,000 ms = 60 seconds)
 let gameOver = false;
 
 
 
 let timeToNextEnemy = 0;
-let enemyInterval = 2000; //enemies start coming too slow, must solve that
+let enemyInterval = 2000; //enemies start coming 
 let lastTime = 0;
 
 
@@ -364,13 +364,13 @@ function drawGameOver(){
  
 
     document.fonts.ready.then(function() {
-        // Set the font with the same name used in Google Fonts
+   
         ctx.font = 'bold 40px "Indie Flower"';
         ctx.fillStyle =  "rgb(5 77 9)";
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
     
-        // Draw the text on the canvas
+  
         ctx.fillText('GAME OVER, your score is ' + score, canvas.width / 2, canvas.height / 2);
     });
 
@@ -452,12 +452,12 @@ window.addEventListener('click', function (e) {
 
 
 function startGame() {
-    gameStartTime = performance.now(); // Use performance.now() for high-resolution time
+    gameStartTime = performance.now(); 
     playMusic(); // Start the music when the game starts//
 
   
     // Add initial enemies and good guys
-    for (let i = 0; i < 2; i++) { // Adjust the number as needed
+    for (let i = 0; i < 2; i++) { 
         enemies.push(new Enemy());
         enemies.push(new Marv());
         enemies.push(new Harry());

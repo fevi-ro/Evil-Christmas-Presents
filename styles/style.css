@@ -42,21 +42,21 @@ header {
     align-items: center; /* Vertically center items */
     justify-content: center; /* Horizontally center items */
     width: 100%;
-    height: auto; /* Let the height adjust based on content */
+    height: auto; /* height adjust based on content */
     padding: 0;
     box-sizing: border-box;
    
 }
 
 .img_container {
-    flex: 0 0 auto; /* Prevent the container from growing or shrinking */
-    margin-right: 1rem; /* Space between image and heading */
+    flex: 0 0 auto; 
+    margin-right: 1rem; 
     margin-top: -4rem;
 }
 
 .img_container img {
     width: 100%;
-    display: block; /* Remove any default inline spacing */
+    display: block; 
     transform-origin: top center; /* Make the ball swing from the top */
     animation: smooth-swing 4s ease-in-out infinite; /* Smooth continuous pendulum swing */
 
@@ -65,28 +65,28 @@ header {
 
 @keyframes smooth-swing {
     0% {
-        transform: rotate(10deg);  /* Start from 30 degrees */
+        transform: rotate(10deg); 
       }
       50% {
-        transform: rotate(-10deg); /* Swing to -30 degrees */
+        transform: rotate(-10deg); 
       }
       100% {
-        transform: rotate(10deg);  /* Return to 30 degrees */
+        transform: rotate(10deg);  
       }
       }
 
 
 .col1 {
     display: flex;
-    align-items: center; /* Vertically center content */
-    justify-content: center; /* Horizontally center content */
-    text-align: center; /* Center text horizontally */
-    flex: 0; /* Allow the column to grow and fill space */
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+    flex: 0; 
     margin-top: -1rem;
 }
 
 h1 {
-    margin: 0; /* Remove default margins */
+    margin: 0;
     font-family: "Mountains of Christmas", serif;
     font-weight: 700;
     font-size: 6rem;
@@ -157,7 +157,7 @@ a {
 /****** Buttons ********/
 
 #play, #returnButton {
-    background-color: #cc2121; /* Green */
+    background-color: #cc2121; 
     border: 2px solid #04AA6D;
     color: white;
     padding: 16px 32px;
@@ -290,30 +290,30 @@ i:before { -webkit-transform: rotate(240deg); }
 
 @media only screen and (max-width: 759px) {
     html, body {
-      background-size: cover; /* Keep the background covering the screen */
-      background-position: center; /* Ensure background is centered */
-      overflow: auto; /* Allow scrolling */
+      background-size: cover; 
+      background-position: center;
+      overflow: auto; 
       display: block; /* Block layout for medium screens */
     }
   
     canvas, #background {
       width: 100vw;
       height: 100vh;
-      background-size: cover; /* Ensure background covers the whole area */
-      background-position: center; /* Center the background image */
+      background-size: cover; 
+      background-position: center; 
       cursor: none;
     }
   
     header {
-      flex-direction: column; /* Stack elements vertically */
-      align-items: center; /* Ensure elements stay centered */
-      padding: 1.5rem; /* Add some padding for larger devices */
+      flex-direction: column; 
+      align-items: center; 
+      padding: 1.5rem; 
     }
   
     .img_container img {
-      width: 70%; /* Adjust image size for larger mobile devices */
-      margin: 0 auto; /* Center the image */
-      margin-top: 2rem; /* Space from the top */
+      width: 70%;
+      margin: 0 auto; 
+      margin-top: 2rem; 
     }
   
     .col1 {
@@ -322,45 +322,43 @@ i:before { -webkit-transform: rotate(240deg); }
     }
   
     h1 {
-      font-size: 4.5rem; /* Larger heading size */
+      font-size: 4.5rem; 
     }
   
     h3 {
-      font-size: 3rem; /* Adjust subheading size */
-    }
-  
+      font-size: 3rem; 
+   }
     p {
-      font-size: 1.2rem; /* Slightly bigger text */
-      padding: 10px 0; /* Maintain padding */
-    }
+      font-size: 1.2rem; 
+      padding: 10px 0; 
   
     .instructions {
       width: 80%; /* Make instruction box wider */
-      margin-top: 3rem; /* More space above */
+      margin-top: 3rem; 
     }
   
     /* Center the play button */
     #play, #returnButton {
-      font-size: 2rem; /* Larger button text */
-      padding: 14px 28px; /* Adjust button padding */
-      margin-top: 1.5rem; /* Add more space above the button */
+      font-size: 2rem; 
+      padding: 14px 28px; 
+      margin-top: 1.5rem; 
       display: block;
       margin-left: auto;
-      margin-right: auto; /* Center the button */
+      margin-right: auto; 
     }
   
     .snowflakes {
       height: 1000px; /* Increase snowflake area height for larger screens */
     }
   }
-
+ }
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
         html, body {
-          background-size: cover; /* Adjust background to fit smaller screens */
+          background-size: cover; 
           background-position: center;
-          overflow: auto; /* Enable scrolling for smaller screens */
-          display: block; /* Flexbox might not work well on small devices */
+          overflow: auto; 
+          display: block; 
          
 
         }
@@ -374,50 +372,50 @@ i:before { -webkit-transform: rotate(240deg); }
         }
       
         header {
-          flex-direction: column; /* Stack elements vertically */
-          align-items: center; /* Ensure elements stay centered */
-          padding: 1rem; /* Add some padding */
+          flex-direction: column; 
+          align-items: center; 
+          padding: 1rem; 
         }
       
         .img_container img {
-          width: 80%; /* Reduce image size */
-          margin: 0 auto; /* Center the image */
-          margin-top: 1rem; /* Space from the top */
+          width: 80%; 
+          margin: 0 auto; 
+          margin-top: 1rem; 
         }
       
         .col1 {
           margin-top: 1rem;
-          font-size: 1.5rem; /* Reduce title size */
+          font-size: 1.5rem; 
         }
       
         h1 {
-          font-size: 3rem; /* Reduce heading size */
+          font-size: 3rem; 
         }
       
         h3 {
-          font-size: 2.5rem; /* Adjust subheading size */
+          font-size: 2.5rem; 
         }
       
         p {
-          font-size: 1rem; /* Make text smaller */
-          padding: 5px 0; /* Reduce padding */
+          font-size: 1rem; 
+          padding: 5px 0; 
         }
       
         .instructions {
-          width: 90%; /* Make the instruction box full width */
-          margin-top: 2rem; /* Reduce space above */
+          width: 90%; 
+          margin-top: 2rem; 
         }
       
         #play, #returnButton {
-          font-size: 1.5rem; /* Reduce button text size */
-          padding: 10px 20px; /* Adjust button padding */
-          margin-top: 1rem; /* Reduce margin */
+          font-size: 1.5rem;
+          padding: 10px 20px; 
+          margin-top: 1rem; 
           margin-left: auto;
           margin-right: auto;
         }
       
         .snowflakes {
-          height: 800px; /* Reduce snowflake area height */
+          height: 800px; 
         }
       }
 }
