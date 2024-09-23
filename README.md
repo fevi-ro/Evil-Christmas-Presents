@@ -19,7 +19,7 @@ Good Guys = -2 Points
 
 HTML, CSS, JavaScript
 
-Deployed on Netlify
+Deployed to Netlify
 
 🎅 **Play the game** ⬇️
 
